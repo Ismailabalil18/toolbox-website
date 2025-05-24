@@ -1,0 +1,17 @@
+[build]
+  publish = "clean_toolbox/src"
+  command = "echo 'No build command needed for this project'"
+
+[build.environment]
+  NODE_VERSION = "20.18.0"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+  
+[dev]
+  framework = "#custom"
+  command = "python3 clean_toolbox/src/main.py"
+  port = 5000
+  targetPort = 5000

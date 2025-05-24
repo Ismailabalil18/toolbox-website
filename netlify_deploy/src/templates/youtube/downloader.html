@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Downloader - ToolBox</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/normalize.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <header class="site-header">
+        <div class="container header-container">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='img/logo.svg') }}" alt="ToolBox Logo">
+                <span class="logo-text">ToolBox</span>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="{{ url_for('main.index') }}">Home</a></li>
+                    <li><a href="{{ url_for('main.about') }}">About</a></li>
+                    <li><a href="{{ url_for('main.faq') }}">FAQ</a></li>
+                    <li><a href="{{ url_for('main.contact') }}">Contact</a></li>
+                </ul>
+            </nav>
+            <button class="mobile-menu-toggle">
+                <i data-lucide="menu"></i>
+            </button>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="tool-page">
+            <div class="tool-header">
+                <h1>YouTube Video Downloader</h1>
+                <p>Download videos from YouTube in MP4 or MP3 format</p>
+            </div>
+            
+            <div class="tool-container">
+                <div class="tool-instructions">
+                    <h3>How to use this tool</h3>
+                    <ol>
+                        <li>Paste the YouTube video URL in the input field below</li>
+                        <li>Select your preferred format (MP4 or MP3)</li>
+                        <li>Click "Download" and wait for processing</li>
+                        <li>Once complete, click "Download File" to save to your device</li>
+                    </ol>
+                </div>
+                
+                <form id="youtube-form" class="tool-form">
+                    <div class="form-group">
+                        <label for="video_url" class="form-label">YouTube Video URL</label>
+                        <input type="url" id="video_url" name="video_url" class="form-control" placeholder="https://www.youtube.com/watch?v=..." required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="format_type" class="form-label">Format</label>
+                        <select id="format_type" name="format_type" class="form-select">
+                            <option value="mp4">MP4 Video</option>
+                            <option value="mp3">MP3 Audio</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="btn">Download</button>
+                </form>
+                
+                <div class="progress-container" style="display: none;">
+                    <p>Processing your request...</p>
+                    <div class="progress">
+                        <div class="progress-bar" style="width: 0%"></div>
+                    </div>
+                </div>
+                
+                <div id="result-container" class="result-container">
+                    <div id="result-success" class="result-success" style="display: none;">
+                        <h4>Download Ready!</h4>
+                        <div id="video-info">
+                            <div id="thumbnail-container" style="margin-bottom: 15px;"></div>
+                            <p><strong>Title:</strong> <span id="video-title"></span></p>
+                            <p><strong>Format:</strong> <span id="video-format"></span></p>
+                        </div>
+                        <button id="download-btn" class="btn btn-accent">Download File</button>
+                    </div>
+                    
+                    <div id="result-error" class="result-error" style="display: none;">
+                        <h4>Error</h4>
+                        <p id="error-message"></p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="related-tools">
+                <h3>Related Tools</h3>
+                <div class="related-tools-grid">
+                    <div class="tool-card">
+                        <div class="tool-card-icon">
+                            <i data-lucide="film-to-audio"></i>
+                        </div>
+                        <h3>MP4 to MP3</h3>
+                        <p>Convert video files to audio format</p>
+                        <a href="{{ url_for('converter.mp4_to_mp3') }}" class="tool-card-link">Use Tool</a>
+                    </div>
+                    <div class="tool-card">
+                        <div class="tool-card-icon">
+                            <i data-lucide="audio-to-film"></i>
+                        </div>
+                        <h3>MP3 to MP4</h3>
+                        <p>Convert audio files to video format</p>
+                        <a href="{{ url_for('converter.mp3_to_mp4') }}" class="tool-card-link">Use Tool</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-container">
+            <div class="footer-section">
+                <h4>ToolBox</h4>
+                <p>Free online utilities to help with your everyday digital needs.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul class="footer-links">
+                    <li><a href="{{ url_for('main.index') }}">Home</a></li>
+                    <li><a href="{{ url_for('main.about') }}">About</a></li>
+                    <li><a href="{{ url_for('main.faq') }}">FAQ</a></li>
+                    <li><a href="{{ url_for('main.contact') }}">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Legal</h4>
+                <ul class="footer-links">
+                    <li><a href="{{ url_for('main.privacy') }}">Privacy Policy</a></li>
+                    <li><a href="{{ url_for('main.terms') }}">Terms of Service</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="container footer-bottom">
+            <p>&copy; 2025 ToolBox. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+        
+        // Mobile menu toggle
+        document.querySelector('.mobile-menu-toggle').addEventListener('click', function() {
+            document.querySelector('.main-nav').classList.toggle('active');
+        });
+        
+        // YouTube downloader form handling
+        document.getElementById('youtube-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Show progress
+            document.querySelector('.progress-container').style.display = 'block';
+            document.getElementById('result-container').style.display = 'none';
+            
+            // Animate progress bar
+            let width = 0;
+            const progressBar = document.querySelector('.progress-bar');
+            const progressInterval = setInterval(function() {
+                if (width >= 90) {
+                    clearInterval(progressInterval);
+                } else {
+                    width += 5;
+                    progressBar.style.width = width + '%';
+                }
+            }, 300);
+            
+            // Get form data
+            const formData = new FormData(this);
+            
+            // Send AJAX request
+            fetch('{{ url_for("youtube.downloader") }}', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Clear progress animation
+                clearInterval(progressInterval);
+                progressBar.style.width = '100%';
+                
+                setTimeout(() => {
+                    document.querySelector('.progress-container').style.display = 'none';
+                    document.getElementById('result-container').style.display = 'block';
+                    
+                    if (data.success) {
+                        // Show success message
+                        document.getElementById('result-success').style.display = 'block';
+                        document.getElementById('result-error').style.display = 'none';
+                        
+                        // Display video info
+                        document.getElementById('video-title').textContent = data.title;
+                        document.getElementById('video-format').textContent = data.format.toUpperCase();
+                        
+                        // Display thumbnail if available
+                        if (data.thumbnail) {
+                            const thumbnailContainer = document.getElementById('thumbnail-container');
+                            thumbnailContainer.innerHTML = `<img src="${data.thumbnail}" alt="Video Thumbnail" style="max-width: 100%; border-radius: 4px;">`;
+                        }
+                        
+                        // Set download button action
+                        document.getElementById('download-btn').addEventListener('click', function() {
+                            window.location.href = '{{ url_for("youtube.download_file", download_id="") }}' + data.download_id;
+                        });
+                    } else {
+                        // Show error message
+                        document.getElementById('result-success').style.display = 'none';
+                        document.getElementById('result-error').style.display = 'block';
+                        document.getElementById('error-message').textContent = data.error || 'An error occurred while processing your request.';
+                    }
+                }, 500);
+            })
+            .catch(error => {
+                // Clear progress animation
+                clearInterval(progressInterval);
+                
+                // Show error message
+                document.querySelector('.progress-container').style.display = 'none';
+                document.getElementById('result-container').style.display = 'block';
+                document.getElementById('result-success').style.display = 'none';
+                document.getElementById('result-error').style.display = 'block';
+                document.getElementById('error-message').textContent = 'Network error. Please try again.';
+            });
+        });
+    </script>
+</body>
+</html>

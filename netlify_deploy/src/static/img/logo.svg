@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Toolbox body -->
+  <rect x="10" y="40" width="100" height="70" rx="8" fill="#1E3A8A"/>
+  
+  <!-- Toolbox handle -->
+  <path d="M40 40V25C40 20 45 15 50 15H70C75 15 80 20 80 25V40" stroke="#0D9488" stroke-width="6" stroke-linecap="round"/>
+  
+  <!-- Tools inside -->
+  <rect x="25" y="55" width="10" height="40" rx="2" fill="#F97316"/>
+  <rect x="45" y="60" width="30" height="8" rx="2" fill="#F97316"/>
+  <circle cx="85" cy="75" r="15" fill="#0D9488"/>
+  <path d="M85 65V85M75 75H95" stroke="white" stroke-width="4" stroke-linecap="round"/>
+  
+  <!-- Shine effect -->
+  <path d="M20 50L100 50" stroke="white" stroke-width="2" stroke-opacity="0.3"/>
+</svg>

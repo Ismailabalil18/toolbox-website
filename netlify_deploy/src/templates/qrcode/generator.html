@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Generator - Free Online Tool | ToolBox</title>
+    {% include 'head_seo.html' %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/normalize.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
+</head>
+<body>
+    <header class="site-header">
+        <div class="container header-container">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='img/logo.svg') }}" alt="ToolBox Logo">
+                <span class="logo-text">ToolBox</span>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="{{ url_for('main.index') }}">Home</a></li>
+                    <li><a href="{{ url_for('main.about') }}">About</a></li>
+                    <li><a href="{{ url_for('main.faq') }}">FAQ</a></li>
+                    <li><a href="{{ url_for('main.contact') }}">Contact</a></li>
+                </ul>
+            </nav>
+            <button class="mobile-menu-toggle">
+                <i data-lucide="menu"></i>
+            </button>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="tool-page">
+            <div class="tool-header">
+                <h1>QR Code Generator</h1>
+                <p>Generate QR codes from text or URLs</p>
+            </div>
+            
+            <div class="tool-container">
+                <div class="tool-instructions">
+                    <h3>How to use this tool</h3>
+                    <ol>
+                        <li>Enter the text or URL you want to encode in the QR code</li>
+                        <li>Click "Generate QR Code"</li>
+                        <li>Once generated, you can view or download the QR code</li>
+                        <li>Scan the QR code with any QR code scanner to retrieve your content</li>
+                    </ol>
+                </div>
+                
+                <form id="qrcode-form" class="tool-form">
+                    <div class="form-group">
+                        <label for="content" class="form-label">Text or URL</label>
+                        <textarea id="content" name="content" class="form-control" rows="4" placeholder="Enter text or URL to encode in QR code" required></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn">Generate QR Code</button>
+                </form>
+                
+                <div class="progress-container" style="display: none;">
+                    <p>Generating your QR code...</p>
+                    <div class="progress">
+                        <div class="progress-bar" style="width: 0%"></div>
+                    </div>
+                </div>
+                
+                <div id="result-container" class="result-container">
+                    <div id="result-success" class="result-success" style="display: none;">
+                        <h4>QR Code Generated!</h4>
+                        <div id="qrcode-container" class="qrcode-container">
+                            <!-- QR code will be displayed here -->
+                            <canvas id="qrcode-canvas"></canvas>
+                        </div>
+                        <p><strong>Content:</strong> <span id="qrcode-content"></span></p>
+                        <div class="button-group">
+                            <button id="download-btn" class="btn btn-accent">Download QR Code</button>
+                            <button id="new-qrcode-btn" class="btn btn-secondary">Generate New QR Code</button>
+                        </div>
+                    </div>
+                    
+                    <div id="result-error" class="result-error" style="display: none;">
+                        <h4>Error</h4>
+                        <p id="error-message"></p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="related-tools">
+                <h3>Related Tools</h3>
+                <div class="related-tools-grid">
+                    <div class="tool-card">
+                        <div class="tool-card-icon">
+                            <i data-lucide="archive"></i>
+                        </div>
+                        <h3>File Compressor</h3>
+                        <p>Compress files to reduce size</p>
+                        <a href="{{ url_for('file.compressor') }}" class="tool-card-link">Use Tool</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-container">
+            <div class="footer-section">
+                <h4>ToolBox</h4>
+                <p>Free online utilities to help with your everyday digital needs.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul class="footer-links">
+                    <li><a href="{{ url_for('main.index') }}">Home</a></li>
+                    <li><a href="{{ url_for('main.about') }}">About</a></li>
+                    <li><a href="{{ url_for('main.faq') }}">FAQ</a></li>
+                    <li><a href="{{ url_for('main.contact') }}">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Legal</h4>
+                <ul class="footer-links">
+                    <li><a href="{{ url_for('main.privacy') }}">Privacy Policy</a></li>
+                    <li><a href="{{ url_for('main.terms') }}">Terms of Service</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="container footer-bottom">
+            <p>&copy; 2025 ToolBox. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+        
+        // Mobile menu toggle
+        document.querySelector('.mobile-menu-toggle').addEventListener('click', function() {
+            document.querySelector('.main-nav').classList.toggle('active');
+        });
+        
+        // QR Code generator form handling
+        document.getElementById('qrcode-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Show progress
+            document.querySelector('.progress-container').style.display = 'block';
+            document.getElementById('result-container').style.display = 'none';
+            
+            // Animate progress bar
+            let width = 0;
+            const progressBar = document.querySelector('.progress-bar');
+            const progressInterval = setInterval(function() {
+                if (width >= 90) {
+                    clearInterval(progressInterval);
+                } else {
+                    width += 10;
+                    progressBar.style.width = width + '%';
+                }
+            }, 100);
+            
+            // Get form data
+            const formData = new FormData(this);
+            const content = formData.get('content');
+            
+            // Send AJAX request
+            fetch('{{ url_for("qrcode.generator") }}', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Clear progress animation
+                clearInterval(progressInterval);
+                progressBar.style.width = '100%';
+                
+                setTimeout(() => {
+                    document.querySelector('.progress-container').style.display = 'none';
+                    document.getElementById('result-container').style.display = 'block';
+                    
+                    if (data.success) {
+                        // Show success message
+                        document.getElementById('result-success').style.display = 'block';
+                        document.getElementById('result-error').style.display = 'none';
+                        
+                        // Display QR code content
+                        document.getElementById('qrcode-content').textContent = data.content;
+                        
+                        // Generate QR code directly in the browser
+                        QRCode.toCanvas(document.getElementById('qrcode-canvas'), data.content, {
+                            width: 300,
+                            margin: 2,
+                            color: {
+                                dark: '#000000',
+                                light: '#ffffff'
+                            }
+                        }, function(error) {
+                            if (error) console.error(error);
+                        });
+                        
+                        // Set download button action
+                        document.getElementById('download-btn').addEventListener('click', function() {
+                            // Create a temporary link to download the canvas as an image
+                            const canvas = document.getElementById('qrcode-canvas');
+                            const link = document.createElement('a');
+                            link.download = 'qrcode.png';
+                            link.href = canvas.toDataURL('image/png');
+                            link.click();
+                        });
+                        
+                        // Set new QR code button action
+                        document.getElementById('new-qrcode-btn').addEventListener('click', function() {
+                            document.getElementById('qrcode-form').reset();
+                            document.getElementById('result-success').style.display = 'none';
+                        });
+                    } else {
+                        // Show error message
+                        document.getElementById('result-success').style.display = 'none';
+                        document.getElementById('result-error').style.display = 'block';
+                        document.getElementById('error-message').textContent = data.error || 'An error occurred while generating your QR code.';
+                    }
+                }, 500);
+            })
+            .catch(error => {
+                // Clear progress animation
+                clearInterval(progressInterval);
+                
+                // Show error message
+                document.querySelector('.progress-container').style.display = 'none';
+                document.getElementById('result-container').style.display = 'block';
+                document.getElementById('result-success').style.display = 'none';
+                document.getElementById('result-error').style.display = 'block';
+                document.getElementById('error-message').textContent = 'Network error. Please try again.';
+            });
+        });
+    </script>
+</body>
+</html>

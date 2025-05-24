@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MP4 to MP3 Converter - ToolBox</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/normalize.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <header class="site-header">
+        <div class="container header-container">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='img/logo.svg') }}" alt="ToolBox Logo">
+                <span class="logo-text">ToolBox</span>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="{{ url_for('main.index') }}">Home</a></li>
+                    <li><a href="{{ url_for('main.about') }}">About</a></li>
+                    <li><a href="{{ url_for('main.faq') }}">FAQ</a></li>
+                    <li><a href="{{ url_for('main.contact') }}">Contact</a></li>
+                </ul>
+            </nav>
+            <button class="mobile-menu-toggle">
+                <i data-lucide="menu"></i>
+            </button>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="tool-page">
+            <div class="tool-header">
+                <h1>MP4 to MP3 Converter</h1>
+                <p>Convert video files to audio format</p>
+            </div>
+            
+            <div class="tool-container">
+                <div class="tool-instructions">
+                    <h3>How to use this tool</h3>
+                    <ol>
+                        <li>Click the upload area or drag and drop your MP4 file</li>
+                        <li>Wait for the conversion to complete</li>
+                        <li>Download your converted MP3 file</li>
+                    </ol>
+                    <p><strong>Note:</strong> Maximum file size is 100MB</p>
+                </div>
+                
+                <form id="converter-form" class="tool-form">
+                    <div class="file-upload" id="file-drop-area">
+                        <div class="file-upload-icon">
+                            <i data-lucide="upload-cloud"></i>
+                        </div>
+                        <p>Click to upload or drag and drop</p>
+                        <p class="file-upload-info">MP4 files only, max 100MB</p>
+                        <input type="file" id="file" name="file" class="file-upload-input" accept=".mp4" required>
+                    </div>
+                    
+                    <div class="form-group" style="margin-top: 20px;">
+                        <button type="submit" class="btn" id="convert-btn">Convert to MP3</button>
+                    </div>
+                </form>
+                
+                <div class="progress-container" style="display: none;">
+                    <p>Converting your file...</p>
+                    <div class="progress">
+                        <div class="progress-bar" style="width: 0%"></div>
+                    </div>
+                </div>
+                
+                <div id="result-container" class="result-container">
+                    <div id="result-success" class="result-success" style="display: none;">
+                        <h4>Conversion Complete!</h4>
+                        <p>Your file has been successfully converted to MP3 format.</p>
+                        <p><strong>Filename:</strong> <span id="result-filename"></span></p>
+                        <button id="download-btn" class="btn btn-accent">Download MP3</button>
+                    </div>
+                    
+                    <div id="result-error" class="result-error" style="display: none;">
+                        <h4>Error</h4>
+                        <p id="error-message"></p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="related-tools">
+                <h3>Related Tools</h3>
+                <div class="related-tools-grid">
+                    <div class="tool-card">
+                        <div class="tool-card-icon">
+                            <i data-lucide="audio-to-film"></i>
+                        </div>
+                        <h3>MP3 to MP4</h3>
+                        <p>Convert audio files to video format</p>
+                        <a href="{{ url_for('converter.mp3_to_mp4') }}" class="tool-card-link">Use Tool</a>
+                    </div>
+                    <div class="tool-card">
+                        <div class="tool-card-icon">
+                            <i data-lucide="download-cloud"></i>
+                        </div>
+                        <h3>YouTube Downloader</h3>
+                        <p>Download videos from YouTube</p>
+                        <a href="{{ url_for('youtube.downloader') }}" class="tool-card-link">Use Tool</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-container">
+            <div class="footer-section">
+                <h4>ToolBox</h4>
+                <p>Free online utilities to help with your everyday digital needs.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul class="footer-links">
+                    <li><a href="{{ url_for('main.index') }}">Home</a></li>
+                    <li><a href="{{ url_for('main.about') }}">About</a></li>
+                    <li><a href="{{ url_for('main.faq') }}">FAQ</a></li>
+                    <li><a href="{{ url_for('main.contact') }}">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Legal</h4>
+                <ul class="footer-links">
+                    <li><a href="{{ url_for('main.privacy') }}">Privacy Policy</a></li>
+                    <li><a href="{{ url_for('main.terms') }}">Terms of Service</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="container footer-bottom">
+            <p>&copy; 2025 ToolBox. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+        
+        // Mobile menu toggle
+        document.querySelector('.mobile-menu-toggle').addEventListener('click', function() {
+            document.querySelector('.main-nav').classList.toggle('active');
+        });
+        
+        // File upload handling
+        const dropArea = document.getElementById('file-drop-area');
+        const fileInput = document.getElementById('file');
+        
+        // Highlight drop area when file is dragged over
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropArea.addEventListener(eventName, function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                dropArea.classList.add('highlight');
+            });
+        });
+        
+        // Remove highlight when file is dragged out
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                dropArea.classList.remove('highlight');
+            });
+        });
+        
+        // Handle file drop
+        dropArea.addEventListener('drop', function(e) {
+            fileInput.files = e.dataTransfer.files;
+            updateFileInfo();
+        });
+        
+        // Handle file selection
+        dropArea.addEventListener('click', function() {
+            fileInput.click();
+        });
+        
+        fileInput.addEventListener('change', updateFileInfo);
+        
+        function updateFileInfo() {
+            if (fileInput.files.length > 0) {
+                const file = fileInput.files[0];
+                const fileSize = (file.size / (1024 * 1024)).toFixed(2); // Convert to MB
+                
+                dropArea.querySelector('p').textContent = file.name;
+                dropArea.querySelector('.file-upload-info').textContent = `${fileSize} MB`;
+                
+                document.getElementById('convert-btn').textContent = 'Convert to MP3';
+                document.getElementById('convert-btn').disabled = false;
+            }
+        }
+        
+        // Form submission
+        document.getElementById('converter-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Check file size
+            if (fileInput.files[0].size > 100 * 1024 * 1024) { // 100MB
+                document.getElementById('result-container').style.display = 'block';
+                document.getElementById('result-success').style.display = 'none';
+                document.getElementById('result-error').style.display = 'block';
+                document.getElementById('error-message').textContent = 'File size exceeds the maximum limit of 100MB.';
+                return;
+            }
+            
+            // Show progress
+            document.querySelector('.progress-container').style.display = 'block';
+            document.getElementById('result-container').style.display = 'none';
+            
+            // Animate progress bar
+            let width = 0;
+            const progressBar = document.querySelector('.progress-bar');
+            const progressInterval = setInterval(function() {
+                if (width >= 90) {
+                    clearInterval(progressInterval);
+                } else {
+                    width += 5;
+                    progressBar.style.width = width + '%';
+                }
+            }, 300);
+            
+            // Get form data
+            const formData = new FormData(this);
+            
+            // Send AJAX request
+            fetch('{{ url_for("converter.mp4_to_mp3") }}', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Clear progress animation
+                clearInterval(progressInterval);
+                progressBar.style.width = '100%';
+                
+                setTimeout(() => {
+                    document.querySelector('.progress-container').style.display = 'none';
+                    document.getElementById('result-container').style.display = 'block';
+                    
+                    if (data.success) {
+                        // Show success message
+                        document.getElementById('result-success').style.display = 'block';
+                        document.getElementById('result-error').style.display = 'none';
+                        
+                        // Display file info
+                        document.getElementById('result-filename').textContent = data.filename;
+                        
+                        // Set download button action
+                        document.getElementById('download-btn').addEventListener('click', function() {
+                            window.location.href = '{{ url_for("converter.download_converted_file", conversion_id="") }}' + data.conversion_id;
+                        });
+                    } else {
+                        // Show error message
+                        document.getElementById('result-success').style.display = 'none';
+                        document.getElementById('result-error').style.display = 'block';
+                        document.getElementById('error-message').textContent = data.error || 'An error occurred during conversion.';
+                    }
+                }, 500);
+            })
+            .catch(error => {
+                // Clear progress animation
+                clearInterval(progressInterval);
+                
+                // Show error message
+                document.querySelector('.progress-container').style.display = 'none';
+                document.getElementById('result-container').style.display = 'block';
+                document.getElementById('result-success').style.display = 'none';
+                document.getElementById('result-error').style.display = 'block';
+                document.getElementById('error-message').textContent = 'Network error. Please try again.';
+            });
+        });
+    </script>
+</body>
+</html>

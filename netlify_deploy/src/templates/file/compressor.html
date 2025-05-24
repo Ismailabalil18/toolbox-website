@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Compressor - Free Online Tool | ToolBox</title>
+    {% include 'head_seo.html' %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/normalize.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <header class="site-header">
+        <div class="container header-container">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='img/logo.svg') }}" alt="ToolBox Logo">
+                <span class="logo-text">ToolBox</span>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="{{ url_for('main.index') }}">Home</a></li>
+                    <li><a href="{{ url_for('main.about') }}">About</a></li>
+                    <li><a href="{{ url_for('main.faq') }}">FAQ</a></li>
+                    <li><a href="{{ url_for('main.contact') }}">Contact</a></li>
+                </ul>
+            </nav>
+            <button class="mobile-menu-toggle">
+                <i data-lucide="menu"></i>
+            </button>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="tool-page">
+            <div class="tool-header">
+                <h1>File Compressor</h1>
+                <p>Compress files to reduce size</p>
+            </div>
+            
+            <div class="tool-container">
+                <div class="tool-instructions">
+                    <h3>How to use this tool</h3>
+                    <ol>
+                        <li>Select the file you want to compress</li>
+                        <li>Choose your compression level</li>
+                        <li>Click "Compress File" and wait for processing</li>
+                        <li>Once complete, download your compressed file</li>
+                    </ol>
+                </div>
+                
+                <form id="compressor-form" class="tool-form">
+                    <div class="form-group">
+                        <label for="file" class="form-label">Select File</label>
+                        <input type="file" id="file" name="file" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="compression_level" class="form-label">Compression Level</label>
+                        <select id="compression_level" name="compression_level" class="form-select">
+                            <option value="1">Low (Faster)</option>
+                            <option value="6" selected>Medium (Balanced)</option>
+                            <option value="9">High (Smaller Size)</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="btn">Compress File</button>
+                </form>
+                
+                <div class="progress-container" style="display: none;">
+                    <p>Compressing your file...</p>
+                    <div class="progress">
+                        <div class="progress-bar" style="width: 0%"></div>
+                    </div>
+                </div>
+                
+                <div id="result-container" class="result-container">
+                    <div id="result-success" class="result-success" style="display: none;">
+                        <h4>Compression Complete!</h4>
+                        <div id="compression-stats">
+                            <p><strong>Original Size:</strong> <span id="original-size"></span></p>
+                            <p><strong>Compressed Size:</strong> <span id="compressed-size"></span></p>
+                            <p><strong>Size Reduction:</strong> <span id="reduction-percent"></span>%</p>
+                        </div>
+                        <button id="download-btn" class="btn btn-accent">Download Compressed File</button>
+                    </div>
+                    
+                    <div id="result-error" class="result-error" style="display: none;">
+                        <h4>Error</h4>
+                        <p id="error-message"></p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="related-tools">
+                <h3>Related Tools</h3>
+                <div class="related-tools-grid">
+                    <div class="tool-card">
+                        <div class="tool-card-icon">
+                            <i data-lucide="qr-code"></i>
+                        </div>
+                        <h3>QR Code Generator</h3>
+                        <p>Generate QR codes from text or URLs</p>
+                        <a href="{{ url_for('qrcode.generator') }}" class="tool-card-link">Use Tool</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-container">
+            <div class="footer-section">
+                <h4>ToolBox</h4>
+                <p>Free online utilities to help with your everyday digital needs.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul class="footer-links">
+                    <li><a href="{{ url_for('main.index') }}">Home</a></li>
+                    <li><a href="{{ url_for('main.about') }}">About</a></li>
+                    <li><a href="{{ url_for('main.faq') }}">FAQ</a></li>
+                    <li><a href="{{ url_for('main.contact') }}">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Legal</h4>
+                <ul class="footer-links">
+                    <li><a href="{{ url_for('main.privacy') }}">Privacy Policy</a></li>
+                    <li><a href="{{ url_for('main.terms') }}">Terms of Service</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="container footer-bottom">
+            <p>&copy; 2025 ToolBox. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+        
+        // Mobile menu toggle
+        document.querySelector('.mobile-menu-toggle').addEventListener('click', function() {
+            document.querySelector('.main-nav').classList.toggle('active');
+        });
+        
+        // File size formatter
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+        
+        // Base64 to Blob converter
+        function b64toBlob(b64Data, contentType = '', sliceSize = 512) {
+            const byteCharacters = atob(b64Data);
+            const byteArrays = [];
+
+            for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+                const slice = byteCharacters.slice(offset, offset + sliceSize);
+                const byteNumbers = new Array(slice.length);
+                
+                for (let i = 0; i < slice.length; i++) {
+                    byteNumbers[i] = slice.charCodeAt(i);
+                }
+                
+                const byteArray = new Uint8Array(byteNumbers);
+                byteArrays.push(byteArray);
+            }
+
+            const blob = new Blob(byteArrays, {type: contentType});
+            return blob;
+        }
+        
+        // File compressor form handling
+        document.getElementById('compressor-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Check if file is selected
+            const fileInput = document.getElementById('file');
+            if (!fileInput.files.length) {
+                alert('Please select a file to compress');
+                return;
+            }
+            
+            // Show progress
+            document.querySelector('.progress-container').style.display = 'block';
+            document.getElementById('result-container').style.display = 'none';
+            
+            // Animate progress bar
+            let width = 0;
+            const progressBar = document.querySelector('.progress-bar');
+            const progressInterval = setInterval(function() {
+                if (width >= 90) {
+                    clearInterval(progressInterval);
+                } else {
+                    width += 5;
+                    progressBar.style.width = width + '%';
+                }
+            }, 300);
+            
+            // Get form data
+            const formData = new FormData(this);
+            
+            // Send AJAX request
+            fetch('{{ url_for("file.compressor") }}', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Clear progress animation
+                clearInterval(progressInterval);
+                progressBar.style.width = '100%';
+                
+                setTimeout(() => {
+                    document.querySelector('.progress-container').style.display = 'none';
+                    document.getElementById('result-container').style.display = 'block';
+                    
+                    if (data.success) {
+                        // Show success message
+                        document.getElementById('result-success').style.display = 'block';
+                        document.getElementById('result-error').style.display = 'none';
+                        
+                        // Display compression stats
+                        document.getElementById('original-size').textContent = formatFileSize(data.original_size);
+                        document.getElementById('compressed-size').textContent = formatFileSize(data.compressed_size);
+                        document.getElementById('reduction-percent').textContent = data.reduction_percent;
+                        
+                        // Set download button action
+                        document.getElementById('download-btn').addEventListener('click', function() {
+                            // Convert base64 to blob and download
+                            const blob = b64toBlob(data.compressed_data, 'application/zip');
+                            const url = window.URL.createObjectURL(blob);
+                            const a = document.createElement('a');
+                            a.style.display = 'none';
+                            a.href = url;
+                            a.download = data.filename;
+                            document.body.appendChild(a);
+                            a.click();
+                            window.URL.revokeObjectURL(url);
+                        });
+                    } else {
+                        // Show error message
+                        document.getElementById('result-success').style.display = 'none';
+                        document.getElementById('result-error').style.display = 'block';
+                        document.getElementById('error-message').textContent = data.error || 'An error occurred while compressing your file.';
+                    }
+                }, 500);
+            })
+            .catch(error => {
+                // Clear progress animation
+                clearInterval(progressInterval);
+                
+                // Show error message
+                document.querySelector('.progress-container').style.display = 'none';
+                document.getElementById('result-container').style.display = 'block';
+                document.getElementById('result-success').style.display = 'none';
+                document.getElementById('result-error').style.display = 'block';
+                document.getElementById('error-message').textContent = 'Network error. Please try again.';
+            });
+        });
+    </script>
+</body>
+</html>

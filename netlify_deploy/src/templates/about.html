@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - ToolBox</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/normalize.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <header class="site-header">
+        <div class="container header-container">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='img/logo.svg') }}" alt="ToolBox Logo">
+                <span class="logo-text">ToolBox</span>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="{{ url_for('main.index') }}">Home</a></li>
+                    <li><a href="{{ url_for('main.about') }}">About</a></li>
+                    <li><a href="{{ url_for('main.faq') }}">FAQ</a></li>
+                    <li><a href="{{ url_for('main.contact') }}">Contact</a></li>
+                </ul>
+            </nav>
+            <button class="mobile-menu-toggle">
+                <i data-lucide="menu"></i>
+            </button>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="page-content">
+            <h1>About ToolBox</h1>
+            <p>ToolBox is a comprehensive online platform that provides a collection of free utility tools to help with your everyday digital needs. Our mission is to make digital tasks simpler and more accessible for everyone.</p>
+            
+            <h2>Our Story</h2>
+            <p>ToolBox was created with a simple idea in mind: to provide a single destination for all the common digital tools people need regularly. Instead of searching for different websites for each task, we wanted to create one reliable platform where users could find everything they need.</p>
+            
+            <h2>Our Tools</h2>
+            <p>We offer a variety of tools designed to help with common digital tasks:</p>
+            <ul>
+                <li><strong>YouTube Video Downloader:</strong> Download videos from YouTube in various formats</li>
+                <li><strong>Media Converters:</strong> Convert between MP4 and MP3 formats</li>
+                <li><strong>PDF to Word Converter:</strong> Transform PDF documents into editable Word files</li>
+                <li><strong>File Compressor:</strong> Reduce file sizes for easier sharing and storage</li>
+                <li><strong>Image Generator:</strong> Create images from text descriptions</li>
+            </ul>
+            
+            <h2>Our Values</h2>
+            <p>At ToolBox, we believe in:</p>
+            <ul>
+                <li><strong>Simplicity:</strong> Making complex tasks easy for everyone</li>
+                <li><strong>Accessibility:</strong> Providing free tools that anyone can use</li>
+                <li><strong>Reliability:</strong> Ensuring our tools work correctly every time</li>
+                <li><strong>Privacy:</strong> Respecting user data and privacy</li>
+            </ul>
+            
+            <h2>Contact Us</h2>
+            <p>Have questions or suggestions? We'd love to hear from you! Visit our <a href="{{ url_for('main.contact') }}">Contact page</a> to get in touch.</p>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-container">
+            <div class="footer-section">
+                <h4>ToolBox</h4>
+                <p>Free online utilities to help with your everyday digital needs.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul class="footer-links">
+                    <li><a href="{{ url_for('main.index') }}">Home</a></li>
+                    <li><a href="{{ url_for('main.about') }}">About</a></li>
+                    <li><a href="{{ url_for('main.faq') }}">FAQ</a></li>
+                    <li><a href="{{ url_for('main.contact') }}">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Legal</h4>
+                <ul class="footer-links">
+                    <li><a href="{{ url_for('main.privacy') }}">Privacy Policy</a></li>
+                    <li><a href="{{ url_for('main.terms') }}">Terms of Service</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="container footer-bottom">
+            <p>&copy; 2025 ToolBox. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+        
+        // Mobile menu toggle
+        document.querySelector('.mobile-menu-toggle').addEventListener('click', function() {
+            document.querySelector('.main-nav').classList.toggle('active');
+        });
+    </script>
+</body>
+</html>
