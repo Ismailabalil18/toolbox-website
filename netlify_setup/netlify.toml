@@ -1,17 +1,20 @@
 [build]
-  publish = "clean_toolbox/src"
-  command = "echo 'No build command needed for this project'"
+  # Base directory where the build command is run and requirements.txt is located
+  base = "netlify_deploy"
+  # Command to build the static site
+  command = "pip install -r requirements.txt && python build.py"
+  # Directory (relative to base) containing the deploy-ready assets after build
+  publish = "netlify_deploy/_site"
 
 [build.environment]
-  NODE_VERSION = "20.18.0"
+  # Specify Python version for Netlify build environment
+  PYTHON_VERSION = "3.11"
+  # Set environment variable needed by Flask/Werkzeug during build
+  WERKZEUG_RUN_MAIN = "true"
 
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
-  
-[dev]
-  framework = "#custom"
-  command = "python3 clean_toolbox/src/main.py"
-  port = 5000
-  targetPort = 5000
+# Redirects/Rewrites (optional, but can be useful for SPAs or clean URLs)
+# [[redirects]]
+#   from = "/*"
+#   to = "/index.html"
+#   status = 200
+
