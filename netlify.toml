@@ -1,0 +1,10 @@
+[build]
+  # Command to build the static site (run from repository root)
+  command = "pip install -r netlify_deploy/requirements.txt && python netlify_deploy/build.py"
+  # Directory (relative to repository root) containing the deploy-ready assets
+  publish = "netlify_deploy/_site"
+
+[build.environment]
+  PYTHON_VERSION = "3.11"
+  WERKZEUG_RUN_MAIN = "true"
+
