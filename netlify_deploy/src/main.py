@@ -12,7 +12,9 @@ from src.routes.main_routes import main_bp
 from src.routes.file_routes import file_bp
 from src.routes.qrcode_routes import qrcode_bp
 
-app = Flask(__name__)
+app = Flask(__name__,
+            template_folder=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates'),
+            static_folder=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static'))
 app.secret_key = os.environ.get('SECRET_KEY', 'toolbox_secret_key')
 
 # Configure upload folder
