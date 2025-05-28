@@ -14,9 +14,9 @@ from flask_frozen import Freezer
 from netlify_deploy.src.main import app
 
 # Configure the freezer
-# Set the base URL if needed, especially if using absolute URLs
-# app.config["FREEZER_BASE_URL"] = "https://tools-box.netlify.app/"
-app.config["FREEZER_DESTINATION"] = "_site" # Output directory
+# Set the output destination relative to this build script's location
+output_dir = os.path.join(current_dir, '_site')
+app.config["FREEZER_DESTINATION"] = output_dir
 app.config["FREEZER_RELATIVE_URLS"] = True # Use relative URLs for better portability
 app.config["FREEZER_IGNORE_MIMETYPE_WARNINGS"] = True # Ignore potential mimetype warnings
 
@@ -28,4 +28,5 @@ if __name__ == "__main__":
     with app.app_context():
         freezer.freeze()
     print(f"Static site generated in {app.config['FREEZER_DESTINATION']} directory.")
+
 
