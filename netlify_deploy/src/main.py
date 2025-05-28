@@ -6,6 +6,7 @@ from flask import Flask, render_template, request, redirect, url_for, jsonify, f
 import os
 import uuid
 import time
+from datetime import datetime # Import datetime
 
 # Import routes
 from src.routes.main_routes import main_bp
@@ -28,6 +29,11 @@ app.register_blueprint(main_bp)
 app.register_blueprint(file_bp, url_prefix='/file')
 app.register_blueprint(qrcode_bp, url_prefix='/qrcode')
 
+# Add context processor to inject 'now' into templates
+@app.context_processor
+def inject_now():
+    return {'now': datetime.utcnow}
+
 # Error handlers
 @app.errorhandler(404)
 def page_not_found(e):
@@ -39,3 +45,4 @@ def server_error(e):
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=False)
+
